@@ -5,9 +5,11 @@ class Property(models.Model):
     _name = "estate.property"
     _description = "Property Model"
 
+    #*** FUNCTIONS ***
     def _new_date_availability(self):
         return fields.Date().today() + relativedelta(months=3)
 
+    #*** FIELDS ***
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
