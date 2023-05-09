@@ -1,2 +1,2 @@
-# first_odoo_app
+# Odoo technical training
  Create a Odoo estate app
