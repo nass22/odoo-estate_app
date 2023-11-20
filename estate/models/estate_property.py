@@ -19,4 +19,3 @@ class Property(models.Model):
     garden_orientation = fields.Selection(string='Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation is used to determinate the orientation of the garden")
-
