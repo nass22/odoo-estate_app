@@ -23,3 +23,4 @@ class Property(models.Model):
         help="Orientation is used to determinate the orientation of the garden")
     active = fields.Boolean(default=True)
     state = fields.Selection(selection=[('new','New'), ('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('sold','Sold'),('canceled','Canceled')], required=True, copy=False, default='new')
+    # property_type_id = fields.Many2one("estate.property.type", string="Type", required=True)
