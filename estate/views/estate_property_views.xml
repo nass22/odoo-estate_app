@@ -7,12 +7,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Settings</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
 <!-- TREE VIEW -->
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.tree</field>
@@ -40,6 +34,7 @@
                     <h1>
                         <field name="name" placeholder="Name" />
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -76,9 +71,15 @@
                             <group>
                                 <field name="garden_orientation"/>
                             </group>
-                            <!-- <group>
+                            <group>
                                 <field name="property_type_id"/>
-                            </group> -->
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="user_id" />
+                                <field name="buyer_id" />
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -101,6 +102,7 @@
                 <filter name="state" string="Available" domain="[('state', '=', 'new'), ('state', '=', 'offered_receveid')]" />
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Type" name="type" context="{'group_by':'property_type_id'}"/>
                 </group>
             </search>
         </field>

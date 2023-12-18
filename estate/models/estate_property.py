@@ -23,4 +23,7 @@ class Property(models.Model):
         help="Orientation is used to determinate the orientation of the garden")
     active = fields.Boolean(default=True)
     state = fields.Selection(selection=[('new','New'), ('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('sold','Sold'),('canceled','Canceled')], required=True, copy=False, default='new')
-    # property_type_id = fields.Many2one("estate.property.type", string="Type", required=True)
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    user_id = fields.Many2one('res.users', string='Salesperson', readonly=True, default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string="Buyer", readonly=True, copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")

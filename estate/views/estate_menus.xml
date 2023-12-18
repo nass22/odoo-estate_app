@@ -2,13 +2,14 @@
 <odoo>
     <menuitem id="estate_menu_root" name="estate">
         <!-- ADVERTISEMENTS -->
-        <menuitem id="estate_first_level_menu" name="Advertisements">
+        <menuitem id="estate_first_level_menu" name="Advertisements" sequence="1">
             <menuitem id="estate_property_menu_action" action="estate_property_action"/>
         </menuitem>
 
         <!-- SETTINGS -->
-        <menuitem id="estate_type_first_level_menu" name="Settings">
+        <menuitem id="estate_type_first_level_menu" name="Settings" sequence="2">
             <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
+            <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
         </menuitem>
     </menuitem>
 </odoo>
