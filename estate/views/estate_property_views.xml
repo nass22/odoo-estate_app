@@ -73,6 +73,9 @@
                             <group>
                                 <field name="property_type_id"/>
                             </group>
+                            <group>
+                                <field name="total_area"/>
+                            </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids" />
