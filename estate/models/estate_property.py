@@ -40,4 +40,16 @@ class Property(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"))
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0.0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
