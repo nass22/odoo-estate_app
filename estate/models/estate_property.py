@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 class Property(models.Model):
     _name = "estate.property"
@@ -22,7 +23,7 @@ class Property(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation is used to determinate the orientation of the garden")
     active = fields.Boolean(default=True)
-    state = fields.Selection(selection=[('new','New'), ('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('sold','Sold'),('canceled','Canceled')], required=True, copy=False, default='new')
+    state = fields.Selection(selection=[('new','New'), ('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('sold','Sold'),('canceled','Canceled')], required=True, copy=False, default='new', string='Status')
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     user_id = fields.Many2one('res.users', string='Salesperson', readonly=True, default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string="Buyer", readonly=True, copy=False)
@@ -31,6 +32,18 @@ class Property(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_offer")
 
+
+    def sold_property(self):
+        if 'canceled' in self.mapped('state'):
+            raise UserError("Canceled properties cannot be sold.")
+        else:
+            self.write({"state": "sold"})
+        
+    def canceled_property(self):
+        if 'sold' in self.mapped('state'):
+            raise UserError("Sold properties cannot be canceled.")
+        else:
+            self.write({"state": "canceled"})
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
