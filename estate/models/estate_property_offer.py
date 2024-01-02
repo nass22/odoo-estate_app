@@ -6,13 +6,18 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for property"
 
+    # SQL CONSTRAINTS
+    _sql_constraints = [
+        ('check_price', 'CHECK(price>0)', 'The price must be strictly positive!')
+    ]
+
     price = fields.Float("Price", required=True)
     status = fields.Selection(string="Status", selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-
+   
 
     def accept_offer(self):
         if "accepted" in self.mapped("property_id.offer_ids.status"):

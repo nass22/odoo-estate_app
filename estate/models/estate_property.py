@@ -1,11 +1,18 @@
 from odoo import api, fields, models
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+
+    # SQL CONSTRAINTS
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price>0)', 'The expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price>0)', 'The selling price must be strictly positive')
+    ]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -31,6 +38,7 @@ class Property(models.Model):
     offer_ids = fields.One2many('estate.property.offer', "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_offer")
+
 
 
     def sold_property(self):
@@ -66,3 +74,9 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+        
+    @api.constrains('expected_price', 'selling_price')
+    def _check_price_difference(self):
+        for record in self:
+            if (not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(record.selling_price,(record.expected_price/100)*90, precision_rounding=0.01) < 0):
+                raise ValidationError("The selling price must be at least 90% of the expected price!")
