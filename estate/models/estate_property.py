@@ -7,6 +7,7 @@ from odoo.tools import float_compare, float_is_zero
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _order = "id desc"
 
     # SQL CONSTRAINTS
     _sql_constraints = [
