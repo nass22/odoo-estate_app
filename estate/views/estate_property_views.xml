@@ -30,8 +30,8 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                    <button name="sold_property" type="object" string="SOLD"/>
-                    <button name="canceled_property" type="object" string="CANCEL"/>
+                    <button name="sold_property" type="object" string="SOLD" states="new,offer_received,offer_accepted"/>
+                    <button name="canceled_property" type="object" string="CANCEL" states="new,offer_received,offer_accepted"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -73,10 +73,10 @@
                                 <field name="garden"/>
                             </group>
                             <group>
-                                <field name="garden_area"/>
+                                <field name="garden_area" attrs="{'invisible': [('garden', '=', False)]}"/>
                             </group>
                             <group>
-                                <field name="garden_orientation"/>
+                                <field name="garden_orientation" attrs="{'invisible': [('garden', '=', False)]}"/>
                             </group>
                             <group>
                                 <field name="property_type_id" options="{'no_create': True}"/>
