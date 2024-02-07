@@ -28,10 +28,13 @@
                 <sheet>
                     <group>
                         <field name="name" />
+                        <!-- DELETE LES 2 EN DESSOUS -->
+                        <field name="offer_ids" />
+                        <field name="offer_count" />
                     </group>
                     <notebook>
                         <page string="Properties">
-                            <field name="property_ids">
+                            <field name="property_ids" readonly="1">
                                 <tree>
                                     <field name="name" />
                                     <field name="expected_price" />
