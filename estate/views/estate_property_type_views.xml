@@ -26,12 +26,14 @@
         <field name="arch" type="xml">
             <form string="Types">
                 <sheet>
-                    <group>
+                    <h1>
                         <field name="name" />
-                        <!-- DELETE LES 2 EN DESSOUS -->
-                        <field name="offer_ids" />
-                        <field name="offer_count" />
-                    </group>
+                    </h1>
+                    
+                    <button name="%(estate.estate_offer_action)d" type="action" class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" widget="statinfo" string=" Offers"/>
+                    </button>
+                
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids" readonly="1">
