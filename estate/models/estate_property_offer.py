@@ -1,6 +1,8 @@
 from odoo import api, fields, models
 from datetime import timedelta, date
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -60,3 +62,18 @@ class EstatePropertyOffer(models.Model):
                 date = fields.Date.today()
 
             record.validity = (record.date_deadline - date).days
+
+    @api.model
+    def create(self, vals):
+        property_id = vals['property_id']
+        property = self.env['estate.property'].browse(property_id)
+
+        if property.offer_ids:
+            max_offer = max(property.mapped('offer_ids.price'))
+
+            if float_compare(vals['price'], max_offer, precision_rounding=0.01) <= 0:
+                raise UserError("The offer must be higher than %.2f" % max_offer)
+            
+        property.state = 'offer_received'
+
+        return super().create(vals)

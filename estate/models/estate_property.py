@@ -81,3 +81,10 @@ class Property(models.Model):
         for record in self:
             if (not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(record.selling_price,(record.expected_price/100)*90, precision_rounding=0.01) < 0):
                 raise ValidationError("The selling price must be at least 90% of the expected price!")
+            
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlik(self):
+        for record in self:
+            if self.state != "new" or self.state != "canceled":
+                raise UserError("Only new and canceled properties can be deleted.")
